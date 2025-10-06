@@ -80,7 +80,7 @@ static void print_record(const Record* r, size_t idx) {
 
 void journal_for_each_sorted_by_shop(const Journal* j) {
     journal_sort(j);
-    printf("Your discounts (sorted by shop):\n");
+    printf("\nYour discounts (sorted by shop):\n");
     for (size_t i = 0; i < journal_count(j); i++) {
         print_record(&(&j->list)->data[i], i);
     }

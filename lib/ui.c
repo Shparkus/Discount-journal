@@ -17,7 +17,7 @@ static int read_line(char* buf, size_t cap) {
 }
 
 void ui_print_menu() {
-    printf("Menu:\n");
+    printf("\nMenu:\n");
     printf("  1. Add discount\n");
     printf("  2. Delete discount(s) by shop\n");
     printf("  3. Show discounts (sorted by shop)\n");

@@ -66,16 +66,6 @@ void record_array_list_destroy(RecordArrayList* list) {
     list->capacity = 0;
 }
 
-size_t record_array_list_size(const RecordArrayList* list) {
-    if (!list) return 0;
-    return list->size;
-}
-
-size_t record_array_list_capacity(const RecordArrayList* list) {
-    if (!list) return 0;
-    return list->capacity;
-}
-
 int record_array_list_reserve(RecordArrayList* list, size_t min_capacity) {
     if (!list) return -1;
     if (list->capacity >= min_capacity) return 0;
@@ -97,22 +87,6 @@ int record_array_list_reserve(RecordArrayList* list, size_t min_capacity) {
     return 0;
 }
 
-void record_array_list_shrink_to_fit(RecordArrayList* list) {
-    if (!list) return;
-    if (list->size == list->capacity) return;
-    if (list->size == 0) {
-        free(list->data);
-        list->data = NULL;
-        list->capacity = 0;
-        return;
-    }
-    Record* new_data = (Record*)realloc(list->data, list->size * sizeof(Record));
-    if (new_data) {
-        list->data = new_data;
-        list->capacity = list->size;
-    }
-}
-
 int record_array_list_push_back(RecordArrayList* list, const Record* r) {
     if (!list || !r) return -1;
     if (record_array_list_reserve(list, list->size + 1) != 0) return -1;
@@ -120,26 +94,6 @@ int record_array_list_push_back(RecordArrayList* list, const Record* r) {
     dst->shop = NULL;
     dst->expiry = NULL;
     if (record_assign(dst, r) != 0) return -1;
-    list->size += 1;
-    return 0;
-}
-
-int record_array_list_insert(RecordArrayList* list, size_t index, const Record* r) {
-    if (!list || !r) return -1;
-    if (index > list->size) return -1;
-
-    if (record_array_list_reserve(list, list->size + 1) != 0) return -1;
-    for (size_t i = list->size; i > index; --i) {
-        list->data[i] = list->data[i - 1];
-    }
-    list->data[index].shop = NULL;
-    list->data[index].expiry = NULL;
-    if (record_assign(&list->data[index], r) != 0) {
-        for (size_t i = index; i < list->size; ++i) {
-            list->data[i] = list->data[i + 1];
-        }
-        return -1;
-    }
     list->size += 1;
     return 0;
 }
@@ -155,26 +109,3 @@ int record_array_list_remove_at(RecordArrayList* list, size_t index) {
     return 0;
 }
 
-int record_array_list_set(RecordArrayList* list, size_t index, const Record* r) {
-    if (!list || !r) return -1;
-    if (index >= list->size) return -1;
-    return record_assign(&list->data[index], r);
-}
-
-void record_array_list_clear(RecordArrayList* list) {
-    if (!list) return;
-    for (size_t i = 0; i < list->size; ++i) {
-        record_destroy(&list->data[i]);
-    }
-    list->size = 0;
-}
-
-const Record* record_array_list_get_const(const RecordArrayList* list, size_t index) {
-    if (!list || index >= list->size) return NULL;
-    return &list->data[index];
-}
-
-Record* record_array_list_get(RecordArrayList* list, size_t index) {
-    if (!list || index >= list->size) return NULL;
-    return &list->data[index];
-}
