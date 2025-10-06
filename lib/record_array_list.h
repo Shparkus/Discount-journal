@@ -18,7 +18,7 @@ typedef struct {
     size_t capacity;
 } RecordArrayList;
 
-void record_array_list_init(RecordArrayList* list);
+int record_array_list_init(RecordArrayList* list);
 void record_array_list_destroy(RecordArrayList* list);
 
 size_t record_array_list_size(const RecordArrayList* list);

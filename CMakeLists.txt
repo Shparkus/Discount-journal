@@ -5,7 +5,11 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-add_library(record_array_list STATIC lib/record_array_list.c)
+add_library(record_array_list STATIC
+    lib/record_array_list.c
+    lib/journal.c
+    lib/ui.c
+)
 
 target_include_directories(record_array_list PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 

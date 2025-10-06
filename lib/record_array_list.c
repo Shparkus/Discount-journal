@@ -48,11 +48,12 @@ int record_assign(Record* dst, const Record* src) {
     return 0;
 }
 
-void record_array_list_init(RecordArrayList* list) {
-    if (!list) return;
+int record_array_list_init(RecordArrayList* list) {
+    if (!list) return 1;
     list->data = NULL;
     list->size = 0;
     list->capacity = 0;
+    return 0;
 }
 
 void record_array_list_destroy(RecordArrayList* list) {
